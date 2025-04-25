@@ -1,0 +1,46 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Кошик{% endblock %}
+
+{% block content %}
+    <h1>Ваш кошик</h1>
+    {% if products %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Кількість</th>
+                    <th>Ціна</th>
+                    <th>Сума</th>
+                    <th>Дія</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.name }}</td>
+                        <td>{{ cart|get_item:product.id }}</td>
+                        <td>{{ product.price }} грн</td>
+                        <td>{% widthratio product.price 1 cart|get_item:product.id %} грн</td>
+                        <td>
+                            <form action="{% url 'store:remove_from_cart' product.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Загальна сума:</td>
+                    <td>{{ total_price }} грн</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <a href="{% url 'store:order_create' %}">Оформити замовлення</a>
+    {% else %}
+        <p>Ваш кошик порожній</p>
+    {% endif %}
+{% endblock %} 

@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Товари{% endblock %}
+
+{% block content %}
+    <h1>Товари</h1>
+    <div class="product-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <a href="{% url 'store:product_detail' product.slug %}">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <h2>{{ product.name }}</h2>
+                    <p>{{ product.price }} грн</p>
+                </a>
+                <form action="{% url 'store:add_to_cart' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Додати до кошика</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>Товарів не знайдено</p>
+        {% endfor %}
+    </div>
+{% endblock %} 
