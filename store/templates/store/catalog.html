@@ -7,27 +7,26 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8">Каталог товарів</h1>
     
+    <!-- Категорії -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {% for category in categories %}
         <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
             <a href="{% url 'store:category_detail' category.slug %}" class="block">
-                {% if category.image %}
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-full h-48 object-cover">
+                {% if category.image and category.image.url %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-full h-48 object-cover">
                 {% else %}
-                <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                    <span class="text-gray-500">Немає зображення</span>
-                </div>
+                    <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                        <span class="text-gray-500">Немає зображення</span>
+                    </div>
                 {% endif %}
                 <div class="p-4">
                     <h2 class="text-xl font-semibold mb-2">{{ category.name }}</h2>
                     {% if category.description %}
-                    <p class="text-gray-600">{{ category.description|truncatewords:20 }}</p>
+                        <p class="text-gray-600">{{ category.description|truncatewords:20 }}</p>
                     {% endif %}
                     <div class="mt-4 flex justify-between items-center">
-                        <span class="text-sm text-gray-500">
-                            {{ category.products.count }} товарів
-                        </span>
-                        <span class="text-primary font-medium">Переглянути →</span>
+                        <span class="text-sm text-gray-500">{{ category.products.count }} товарів</span>
+                        <span class="text-green-600 font-medium">Переглянути →</span>
                     </div>
                 </div>
             </a>
@@ -42,15 +41,19 @@
             {% for product in popular_products %}
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <a href="{% url 'store:product_detail' product.slug %}" class="block">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover">
+                    {% if product.image and product.image.url %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-48 object-cover">
+                    {% else %}
+                        <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                            <span class="text-gray-500">Немає зображення</span>
+                        </div>
+                    {% endif %}
                     <div class="p-4">
                         <h3 class="text-lg font-semibold mb-2">{{ product.name }}</h3>
                         <p class="text-gray-600 mb-4">{{ product.description|truncatewords:15 }}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xl font-bold text-primary">{{ product.price }} грн</span>
-                            <span class="text-sm text-gray-500">
-                                {{ product.views }} переглядів
-                            </span>
+                            <span class="text-xl font-bold text-green-600">{{ product.price }} грн</span>
+                            <span class="text-sm text-gray-500">{{ product.views }} переглядів</span>
                         </div>
                     </div>
                 </a>
@@ -59,4 +62,4 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}

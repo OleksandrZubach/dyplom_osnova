@@ -1,0 +1,62 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Редагування профілю - САД та ГОРОД{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6 text-dark-green">Редагування профілю</h1>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Аватарка -->
+            <div class="flex items-center gap-6">
+                {% if request.user.profile.avatar %}
+                    <img src="{{ request.user.profile.avatar.url }}" alt="Аватар" class="w-20 h-20 object-cover rounded-full shadow">
+                {% else %}
+                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <div>
+                    <label class="block mb-1 text-sm text-gray-600">Завантажити нову аватарку</label>
+                    {{ profile_form.avatar }}
+                </div>
+            </div>
+
+            <!-- Ім'я -->
+            <div>
+                <label class="block mb-2 font-medium">Ім’я:</label>
+                {{ user_form.first_name }}
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block mb-2 font-medium">Email:</label>
+                {{ user_form.email }}
+            </div>
+
+            <!-- Телефон -->
+            <div>
+                <label class="block mb-2 font-medium">Телефон:</label>
+                {{ profile_form.phone }}
+            </div>
+
+            <!-- Місто -->
+            <div>
+                <label class="block mb-2 font-medium">Місто:</label>
+                {{ profile_form.city }}
+            </div>
+
+            <div class="flex justify-between items-center">
+                <a href="{% url 'store:account' %}" class="text-primary hover:underline">← Повернутись в акаунт</a>
+                <button type="submit" class="bg-primary text-white px-6 py-2 rounded hover:bg-dark-green transition-colors">
+                    Зберегти зміни
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
